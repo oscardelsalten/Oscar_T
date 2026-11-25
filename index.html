@@ -169,6 +169,62 @@
         </div>
     </div>
 </section>
+#about {
+    border: none;
+    padding: 0 0 48px;
+}
+
+.about-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+    gap: 40px;
+    align-items: center;
+}
+
+.portrait-frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    background: #1b2526;
+}
+
+#portrait-source {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+#portrait-canvas {
+    display: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#about-copy {
+    filter: blur(12px);
+}
+
+label[for="portrait-detail"] {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+#portrait-detail {
+    width: 100%;
+    accent-color: var(--accent);
+}
+
+@media (max-width: 700px) {
+    .about-layout {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+}
   </style>
 </head>
 <body>
