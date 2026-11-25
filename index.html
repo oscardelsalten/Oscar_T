@@ -34,6 +34,141 @@
     .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
     @media(max-width:550px) { .caption { bottom:22%; } .masthead { top:22px; } .controls { bottom:24px; } }
     @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .intro { height:100svh; } }
+  .poster-viewport {
+    overflow: hidden;
+    padding: 10px;
+}
+
+.poster-track {
+    display: flex;
+    width: max-content;
+    animation: poster-conveyor 45s linear infinite;
+}
+
+.poster-group {
+    display: flex;
+    flex: none;
+    gap: 24px;
+    padding-right: 24px;
+}
+
+.poster-card {
+    display: block;
+    width: 280px;
+    padding: 12px;
+    border: 1px solid #354041;
+    border-radius: 10px;
+    background: #1b2526;
+    color: #f2eedf;
+    text-decoration: none;
+}
+
+.poster-card img {
+    display: block;
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
+}
+
+.poster-card span {
+    display: block;
+    margin-top: 12px;
+}
+
+.poster-viewport:hover .poster-track {
+    animation-play-state: paused;
+}
+
+/* Keep the gallery stationary and scrollable for keyboard navigation. */
+.poster-viewport:focus-within {
+    overflow-x: auto;
+}
+
+.poster-viewport:focus-within .poster-track {
+    animation: none;
+}
+
+.poster-viewport:focus-within .poster-group[aria-hidden] {
+    display: none;
+}
+
+@keyframes poster-conveyor {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .poster-track {
+        animation: none;
+    }
+
+    .poster-viewport {
+        overflow-x: auto;
+    }
+
+    .poster-group[aria-hidden] {
+        display: none;
+    }
+}<section id="posters">
+    <h2>Posters</h2>
+    <p>Hover to pause. Click a poster to view it full size.</p>
+
+    <div class="poster-viewport">
+        <div class="poster-track">
+
+            <div class="poster-group">
+                <a class="poster-card"
+                   href="posters/EdwardsErosion.png"
+                   target="_blank" rel="noopener">
+                    <img src="posters/EdwardsErosion.png"
+                         alt="Edwards Erosion research poster">
+                    <span>Edwards Erosion</span>
+                </a>
+
+                <a class="poster-card"
+                   href="posters/MLEM_Poster.png"
+                   target="_blank" rel="noopener">
+                    <img src="posters/MLEM_Poster.png"
+                         alt="MLEM research poster">
+                    <span>MLEM</span>
+                </a>
+
+                <a class="poster-card"
+                   href="posters/Sierpinski_Poster.png"
+                   target="_blank" rel="noopener">
+                    <img src="posters/Sierpinski_Poster.png"
+                         alt="Sierpiński research poster">
+                    <span>Sierpiński</span>
+                </a>
+            </div>
+
+            <!-- Repeated images make the conveyor loop seamlessly. -->
+            <div class="poster-group" aria-hidden="true">
+                <a class="poster-card"
+                   href="posters/EdwardsErosion.png"
+                   target="_blank" rel="noopener" tabindex="-1">
+                    <img src="posters/EdwardsErosion.png" alt="">
+                    <span>Edwards Erosion</span>
+                </a>
+
+                <a class="poster-card"
+                   href="posters/MLEM_Poster.png"
+                   target="_blank" rel="noopener" tabindex="-1">
+                    <img src="posters/MLEM_Poster.png" alt="">
+                    <span>MLEM</span>
+                </a>
+
+                <a class="poster-card"
+                   href="posters/Sierpinski_Poster.png"
+                   target="_blank" rel="noopener" tabindex="-1">
+                    <img src="posters/Sierpinski_Poster.png" alt="">
+                    <span>Sierpiński</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
   </style>
 </head>
 <body>
@@ -72,6 +207,66 @@
             Read the paper (PDF)
         </a>
     </p>
+<section id="posters">
+    <h2>Posters</h2>
+    <p>Hover to pause. Click a poster to view it full size.</p>
+
+    <div class="poster-viewport">
+        <div class="poster-track">
+
+            <div class="poster-group">
+                <a class="poster-card"
+                   href="posters/EdwardsErosion.png"
+                   target="_blank" rel="noopener">
+                    <img src="posters/EdwardsErosion.png"
+                         alt="Edwards Erosion research poster">
+                    <span>Edwards Erosion</span>
+                </a>
+
+                <a class="poster-card"
+                   href="posters/MLEM_Poster.png"
+                   target="_blank" rel="noopener">
+                    <img src="posters/MLEM_Poster.png"
+                         alt="MLEM research poster">
+                    <span>MLEM</span>
+                </a>
+
+                <a class="poster-card"
+                   href="posters/Sierpinski_Poster.png"
+                   target="_blank" rel="noopener">
+                    <img src="posters/Sierpinski_Poster.png"
+                         alt="Sierpiński research poster">
+                    <span>Sierpiński</span>
+                </a>
+            </div>
+
+            <!-- Repeated images make the conveyor loop seamlessly. -->
+            <div class="poster-group" aria-hidden="true">
+                <a class="poster-card"
+                   href="posters/EdwardsErosion.png"
+                   target="_blank" rel="noopener" tabindex="-1">
+                    <img src="posters/EdwardsErosion.png" alt="">
+                    <span>Edwards Erosion</span>
+                </a>
+
+                <a class="poster-card"
+                   href="posters/MLEM_Poster.png"
+                   target="_blank" rel="noopener" tabindex="-1">
+                    <img src="posters/MLEM_Poster.png" alt="">
+                    <span>MLEM</span>
+                </a>
+
+                <a class="poster-card"
+                   href="posters/Sierpinski_Poster.png"
+                   target="_blank" rel="noopener" tabindex="-1">
+                    <img src="posters/Sierpinski_Poster.png" alt="">
+                    <span>Sierpiński</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</section>
 </section>
     <section id="resume"><h2>Résumé</h2><p>This is where you can introduce and link to your résumé.</p></section>
     <section id="teaching"><h2>Teaching portfolio</h2><p>Your teaching philosophy, lesson plans, and selected classroom materials can live here.</p></section>
