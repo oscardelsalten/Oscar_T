@@ -340,6 +340,43 @@ label[for="portrait-detail"] {
     color: #ffad66;
     font-size: 10px;
 }
+.caption .working-caption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.1em 0.35em;
+    font-size: clamp(18px, 2.6vw, 36px);
+    line-height: 1.4;
+    color: #ffffff;
+}
+
+.working-prefix {
+    color: #ffffff;
+    white-space: nowrap;
+}
+
+.working-window {
+    display: block;
+    width: 33ch;
+    max-width: 100%;
+    height: 1.4em;
+    overflow: hidden;
+    color: #ffe066;
+}
+
+#working-reel {
+    display: block;
+    will-change: transform;
+}
+
+.working-row {
+    display: block;
+    height: 1.4em;
+    line-height: 1.4em;
+    white-space: nowrap;
+    text-align: center;
+}
 </style>
 </head>
 
@@ -360,7 +397,21 @@ label[for="portrait-detail"] {
         </canvas>
 
         <div class="caption">
-            <p class="label">Working on clearing things up.</p>
+           <p class="label working-caption">
+    <span class="sr-only">
+        Working on mathematical research and clear communication.
+    </span>
+
+    <span class="working-prefix" aria-hidden="true">
+        Working on
+    </span>
+
+    <span class="working-window" aria-hidden="true">
+        <span id="working-reel">
+            <span class="working-row">Clearing things up</span>
+        </span>
+    </span>
+</p>
             <p id="hint">
                 Scroll to reconstruct the letters.<br>
                 Each circle contributes another Fourier component.
@@ -853,12 +904,55 @@ function drawLoop(coefficients, count, phase, scale, circles, fade) {
     ctx.fillStyle = `rgba(255,190,136,${fade})`;
     ctx.fill();
 }
+const workingPhrases = [
+    'Clearing things up',
+    'Uncertainty Quantification',
+    'Inverse Problems',
+    'Noise Reduction',
+    'Interdisciplinary Communication'
+];
 
+const workingReel = document.getElementById('working-reel');
+
+if (workingReel) {
+    workingReel.replaceChildren(...workingPhrases.map(phrase => {
+        const row = document.createElement('span');
+        row.className = 'working-row';
+        row.textContent = phrase;
+        return row;
+    }));
+}
+
+function updateWorkingReel(p) {
+    if (!workingReel) return;
+
+    const position = Math.max(0, Math.min(1, p)) *
+                     (workingPhrases.length - 1);
+
+    const index = Math.floor(position);
+    const fraction = position - index;
+
+    // Hold each phrase still, then roll into the next.
+    const t = Math.max(
+        0,
+        Math.min(1, (fraction - 0.65) / 0.35)
+    );
+
+    const eased = t * t * (3 - 2 * t);
+
+    const offset = reducedMotion.matches
+        ? Math.round(position)
+        : index + eased;
+
+    workingReel.style.transform =
+        `translateY(${-offset * 100 / workingPhrases.length}%)`;
+}
 function draw() {
     pending = false;
     ctx.clearRect(0, 0, width, height);
 
     const p = Math.max(0, Math.min(1, progress));
+    updateWorkingReel(p);
     const count = Math.min(
         MAX_TERMS,
         5 + Math.floor(p * p * (MAX_TERMS - 5))
