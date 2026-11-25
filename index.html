@@ -319,6 +319,27 @@ label[for="portrait-detail"] {
     .poster-viewport { overflow-x: auto; }
     .poster-group[aria-hidden] { display: none; }
 }
+/* Scroll instructions and slider captions */
+.caption #hint,
+.controls label,
+label[for="portrait-detail"] {
+    color: #ffad66;
+    font-size: clamp(20px, 2vw, 26px);
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+/* The sentence above the scroll instructions */
+.caption .label {
+    color: #ffad66;
+    font-size: clamp(26px, 3vw, 36px);
+}
+
+/* Fourier term counter */
+#readout {
+    color: #ffad66;
+    font-size: 18px;
+}
 </style>
 </head>
 
