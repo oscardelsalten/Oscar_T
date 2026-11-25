@@ -1,40 +1,243 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Oscar — Fourier lettering experiment</title>
-  <style>
-    :root { color-scheme:dark; --paper:#f2eedf; --muted:#a6a79d; --accent:#e5a477; }
-    * { box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
-    body { margin:0; background:#141c1d; color:var(--paper); font-family:Arial,sans-serif; }
-    a { color:inherit; text-underline-offset:5px; }
-    a:focus-visible, input:focus-visible { outline:2px solid var(--accent); outline-offset:7px; }
-    .intro { height:350svh; }
-    .pinned { position:sticky; top:0; height:100svh; min-height:460px; overflow:hidden; }
-    .masthead { position:absolute; top:30px; left:5vw; right:5vw; display:flex; flex-wrap:wrap; justify-content:space-between; gap:18px; z-index:2; }
-    .masthead span { font-size:12px; text-transform:uppercase; letter-spacing:.16em; }
-    .masthead a { font-size:12px; color:var(--muted); }
-    canvas { display:block; position:absolute; width:100%; height:100%; }
-    .caption { position:absolute; bottom:16%; left:5vw; right:5vw; text-align:center; pointer-events:none; }
-    .caption p { color:var(--muted); font-size:14px; line-height:1.7; }
-    .caption .label { color:var(--paper); font-family:Georgia,serif; font-size:clamp(20px,3vw,30px); margin-bottom:8px; }
-    .controls { position:absolute; bottom:28px; left:5vw; right:5vw; display:grid; grid-template-columns:1fr auto; gap:12px 28px; align-items:center; }
-    .controls label { color:var(--muted); font-size:12px; letter-spacing:.04em; }
-    input { width:100%; accent-color:var(--accent); cursor:pointer; }
-    output { font-variant-numeric:tabular-nums; font-size:12px; color:var(--accent); min-width:110px; text-align:right; }
-    main { max-width:980px; margin:auto; padding:40px 6vw 100px; }
-    nav { display:flex; flex-wrap:wrap; gap:24px; padding:24px 0 50px; }
-    nav a { font-size:14px; color:var(--accent); }
-    main section { padding:50px 0; border-top:1px solid #354041; scroll-margin-top:30px; }
-    h2 { font:normal clamp(30px,5vw,44px) Georgia,serif; margin:0 0 18px; }
-    main p { max-width:630px; color:#bbc0b8; line-height:1.8; }
-    .eyebrow { text-transform:uppercase; letter-spacing:.15em; font-size:11px; color:var(--accent); margin-bottom:25px; }
-    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
-    @media(max-width:550px) { .caption { bottom:22%; } .masthead { top:22px; } .controls { bottom:24px; } }
-    @media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .intro { height:100svh; } }
-  .poster-viewport {
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oscar Thompson</title>
+
+<style>
+:root {
+    color-scheme: dark;
+    --paper: #f2eedf;
+    --muted: #a6a79d;
+    --accent: #e5a477;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    background: #141c1d;
+    color: var(--paper);
+    font-family: Arial, sans-serif;
+}
+
+a {
+    color: inherit;
+    text-underline-offset: 5px;
+}
+
+a:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 7px;
+}
+
+/* Fourier introduction */
+
+.intro { height: 350svh; }
+
+.pinned {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 460px;
+    overflow: hidden;
+}
+
+.masthead {
+    position: absolute;
+    top: 30px;
+    left: 5vw;
+    right: 5vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 18px;
+    z-index: 2;
+}
+
+.masthead span {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .16em;
+}
+
+.masthead a {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.intro canvas {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.caption {
+    position: absolute;
+    bottom: 16%;
+    left: 5vw;
+    right: 5vw;
+    text-align: center;
+    pointer-events: none;
+}
+
+.caption p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.caption .label {
+    color: var(--paper);
+    font-family: Georgia, serif;
+    font-size: clamp(20px, 3vw, 30px);
+    margin-bottom: 8px;
+}
+
+.controls {
+    position: absolute;
+    bottom: 28px;
+    left: 5vw;
+    right: 5vw;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px 28px;
+    align-items: center;
+}
+
+.controls label {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: .04em;
+}
+
+input {
+    width: 100%;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+output {
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+    color: var(--accent);
+    min-width: 110px;
+    text-align: right;
+}
+
+/* Main content */
+
+main {
+    max-width: 980px;
+    margin: auto;
+    padding: 40px 6vw 100px;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 24px 0 50px;
+}
+
+nav a {
+    font-size: 14px;
+    color: var(--accent);
+}
+
+main section {
+    padding: 50px 0;
+    border-top: 1px solid #354041;
+    scroll-margin-top: 30px;
+}
+
+h2 {
+    font: normal clamp(30px, 5vw, 44px) Georgia, serif;
+    margin: 0 0 18px;
+}
+
+main p {
+    max-width: 630px;
+    color: #bbc0b8;
+    line-height: 1.8;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Portrait and introduction */
+
+#about {
+    border: none;
+    padding: 0 0 48px;
+}
+
+.about-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+    gap: 40px;
+    align-items: center;
+}
+
+.portrait-frame {
+    width: 320px;
+    max-width: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    background: #1b2526;
+}
+
+#portrait-source {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+#portrait-canvas {
+    display: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Only the answer is blurred, not the heading. */
+#about-text {
+    filter: blur(12px);
+}
+
+label[for="portrait-detail"] {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+#portrait-detail {
+    width: 100%;
+    accent-color: var(--accent);
+}
+
+/* Poster conveyor */
+
+.poster-viewport {
     overflow: hidden;
     padding: 10px;
 }
@@ -59,7 +262,7 @@
     border: 1px solid #354041;
     border-radius: 10px;
     background: #1b2526;
-    color: #f2eedf;
+    color: var(--paper);
     text-decoration: none;
 }
 
@@ -79,7 +282,6 @@
     animation-play-state: paused;
 }
 
-/* Keep the gallery stationary and scrollable for keyboard navigation. */
 .poster-viewport:focus-within {
     overflow-x: auto;
 }
@@ -94,129 +296,7 @@
 
 @keyframes poster-conveyor {
     from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .poster-track {
-        animation: none;
-    }
-
-    .poster-viewport {
-        overflow-x: auto;
-    }
-
-    .poster-group[aria-hidden] {
-        display: none;
-    }
-}<section id="posters">
-    <h2>Posters</h2>
-    <p>Hover to pause. Click a poster to view it full size.</p>
-
-    <div class="poster-viewport">
-        <div class="poster-track">
-
-            <div class="poster-group">
-                <a class="poster-card"
-                   href="posters/EdwardsErosion.png"
-                   target="_blank" rel="noopener">
-                    <img src="posters/EdwardsErosion.png"
-                         alt="Edwards Erosion research poster">
-                    <span>Edwards Erosion</span>
-                </a>
-
-                <a class="poster-card"
-                   href="posters/MLEM_Poster.png"
-                   target="_blank" rel="noopener">
-                    <img src="posters/MLEM_Poster.png"
-                         alt="MLEM research poster">
-                    <span>MLEM</span>
-                </a>
-
-                <a class="poster-card"
-                   href="posters/Sierpinski_Poster.png"
-                   target="_blank" rel="noopener">
-                    <img src="posters/Sierpinski_Poster.png"
-                         alt="Sierpiński research poster">
-                    <span>Sierpiński</span>
-                </a>
-            </div>
-
-            <!-- Repeated images make the conveyor loop seamlessly. -->
-            <div class="poster-group" aria-hidden="true">
-                <a class="poster-card"
-                   href="posters/EdwardsErosion.png"
-                   target="_blank" rel="noopener" tabindex="-1">
-                    <img src="posters/EdwardsErosion.png" alt="">
-                    <span>Edwards Erosion</span>
-                </a>
-
-                <a class="poster-card"
-                   href="posters/MLEM_Poster.png"
-                   target="_blank" rel="noopener" tabindex="-1">
-                    <img src="posters/MLEM_Poster.png" alt="">
-                    <span>MLEM</span>
-                </a>
-
-                <a class="poster-card"
-                   href="posters/Sierpinski_Poster.png"
-                   target="_blank" rel="noopener" tabindex="-1">
-                    <img src="posters/Sierpinski_Poster.png" alt="">
-                    <span>Sierpiński</span>
-                </a>
-            </div>
-
-        </div>
-    </div>
-</section>
-#about {
-    border: none;
-    padding: 0 0 48px;
-}
-
-.about-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
-    gap: 40px;
-    align-items: center;
-}
-
-.portrait-frame {
-    position: relative;
-    overflow: hidden;
-    border-radius: 12px;
-    margin-bottom: 18px;
-    background: #1b2526;
-}
-
-#portrait-source {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
-#portrait-canvas {
-    display: none;
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-}
-
-#about-copy {
-    filter: blur(12px);
-}
-
-label[for="portrait-detail"] {
-    display: block;
-    margin-bottom: 8px;
-    color: var(--muted);
-    font-size: 13px;
-}
-
-#portrait-detail {
-    width: 100%;
-    accent-color: var(--accent);
+    to { transform: translateX(-50%); }
 }
 
 @media (max-width: 700px) {
@@ -225,374 +305,626 @@ label[for="portrait-detail"] {
         gap: 28px;
     }
 }
-  </style>
+
+@media (max-width: 550px) {
+    .caption { bottom: 22%; }
+    .masthead { top: 22px; }
+    .controls { bottom: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .intro { height: 100svh; }
+    .poster-track { animation: none; }
+    .poster-viewport { overflow-x: auto; }
+    .poster-group[aria-hidden] { display: none; }
+}
+</style>
 </head>
+
 <body>
-  <!-- This entire experiment is separate from your existing website. -->
-  <section class="intro" aria-label="Interactive Fourier reconstruction of Oscar">
+
+<section class="intro" aria-label="Interactive Fourier reconstruction of Oscar">
     <div class="pinned">
-      <div class="masthead"><span>Oscar Thompson</span><a href="#portfolio">Skip to portfolio ↓</a></div>
-      <h1 class="sr-only">Oscar Thompson</h1>
-      <canvas aria-label="Rotating circles reconstruct the outlines of the letters O S C A R as you scroll" role="img"></canvas>
-      <div class="caption">
-        <p class="label">A little more detail. A little more clarity.</p>
-        <p id="hint">Scroll to reconstruct the letters.<br>Each circle contributes another Fourier component.</p>
-      </div>
-      <div class="controls">
-        <label for="detail">Detail — scroll, or try the slider</label><output for="detail" id="readout">Preparing…</output>
-        <input id="detail" type="range" min="0" max="1000" value="0" aria-label="Fourier reconstruction detail">
-      </div>
-    </div>
-  </section>
-  <main id="portfolio">
-  <section id="about">
-    <div class="about-layout">
-        <div>
-            <div class="portrait-frame">
-                <img id="portrait-source"
-                     src="images/IMG_0669.jpeg"
-                     alt="Oscar Thompson">
-
-                <canvas id="portrait-canvas"
-                        aria-hidden="true"></canvas>
-            </div>
-
-            <label for="portrait-detail">Bring into focus</label>
-            <input id="portrait-detail"
-                   type="range"
-                   min="0"
-                   max="100"
-                   value="0">
+        <div class="masthead">
+            <span>Oscar Thompson</span>
+            <a href="#portfolio">Skip to portfolio ↓</a>
         </div>
 
-        <div id="about-copy">
-            <h2>Who am I?</h2>
-            <p>Hi! Welcome to my website. I was born and raised in Berkeley, California. I love backpacking, playing cards, singing karaoke, and dancing.</p>
+        <h1 class="sr-only">Oscar Thompson</h1>
+
+        <canvas
+            aria-label="Rotating circles reconstruct OSCAR as you scroll"
+            role="img">
+        </canvas>
+
+        <div class="caption">
+            <p class="label">A little more detail. A little more clarity.</p>
+            <p id="hint">
+                Scroll to reconstruct the letters.<br>
+                Each circle contributes another Fourier component.
+            </p>
+        </div>
+
+        <div class="controls">
+            <label for="detail">Detail — scroll, or try the slider</label>
+            <output for="detail" id="readout">Preparing…</output>
+            <input
+                id="detail"
+                type="range"
+                min="0"
+                max="1000"
+                value="0"
+                aria-label="Fourier reconstruction detail">
         </div>
     </div>
 </section>
+
+<main id="portfolio">
+
+    <section id="about">
+        <div class="about-layout">
+            <div>
+                <div class="portrait-frame">
+                    <img
+                        id="portrait-source"
+                        src="images/IMG_0669.jpeg"
+                        alt="Oscar Thompson">
+
+                    <canvas
+                        id="portrait-canvas"
+                        aria-hidden="true">
+                    </canvas>
+                </div>
+
+                <label for="portrait-detail">Bring into focus</label>
+                <input
+                    id="portrait-detail"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="0">
+            </div>
+
+            <div id="about-copy">
+                <h2>Who am I?</h2>
+
+                <div id="about-text">
+                    <p>Write your introduction here.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <nav aria-label="Portfolio">
+        <a href="#latex-projects">Selected Writing</a>
+        <a href="#posters">Posters</a>
+        <a href="#resume">Résumé</a>
+        <a href="#teaching">Teaching portfolio</a>
+    </nav>
+
+    <section id="latex-projects">
+        <h2>Selected Writing</h2>
+
+        <h3>Differential Equations Project</h3>
+        <p>
+            <a href="papers/Diff_Eeks_Project-2.pdf">
+                Read the paper (PDF)
+            </a>
+        </p>
+
+        <h3>MLEM Uncertainty</h3>
+        <p>
+            <a href="papers/MLEM_Uncertainty_write_up_.pdf">
+                Read the paper (PDF)
+            </a>
+        </p>
+    </section>
+
+    <section id="posters">
+        <h2>Posters</h2>
+        <p>Hover to pause. Click a poster to view it full size.</p>
+
+        <div class="poster-viewport">
+            <div class="poster-track">
+
+                <div class="poster-group">
+                    <a
+                        class="poster-card"
+                        href="posters/EdwardsErosion.png"
+                        target="_blank"
+                        rel="noopener">
+                        <img
+                            src="posters/EdwardsErosion.png"
+                            alt="Edwards Erosion research poster">
+                        <span>Edwards Erosion</span>
+                    </a>
+
+                    <a
+                        class="poster-card"
+                        href="posters/MLEM_Poster.png"
+                        target="_blank"
+                        rel="noopener">
+                        <img
+                            src="posters/MLEM_Poster.png"
+                            alt="MLEM research poster">
+                        <span>MLEM</span>
+                    </a>
+
+                    <a
+                        class="poster-card"
+                        href="posters/Sierpinski_Poster.png"
+                        target="_blank"
+                        rel="noopener">
+                        <img
+                            src="posters/Sierpinski_Poster.png"
+                            alt="Sierpiński research poster">
+                        <span>Sierpiński</span>
+                    </a>
+                </div>
+
+                <!-- Duplicate group creates the seamless loop. -->
+                <div class="poster-group" aria-hidden="true">
+                    <a
+                        class="poster-card"
+                        href="posters/EdwardsErosion.png"
+                        target="_blank"
+                        rel="noopener"
+                        tabindex="-1">
+                        <img src="posters/EdwardsErosion.png" alt="">
+                        <span>Edwards Erosion</span>
+                    </a>
+
+                    <a
+                        class="poster-card"
+                        href="posters/MLEM_Poster.png"
+                        target="_blank"
+                        rel="noopener"
+                        tabindex="-1">
+                        <img src="posters/MLEM_Poster.png" alt="">
+                        <span>MLEM</span>
+                    </a>
+
+                    <a
+                        class="poster-card"
+                        href="posters/Sierpinski_Poster.png"
+                        target="_blank"
+                        rel="noopener"
+                        tabindex="-1">
+                        <img src="posters/Sierpinski_Poster.png" alt="">
+                        <span>Sierpiński</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="resume">
+        <h2>Résumé</h2>
+        <p>This is where you can introduce and link to your résumé.</p>
+    </section>
+
+    <section id="teaching">
+        <h2>Teaching portfolio</h2>
+        <p>
+            Your teaching philosophy, lesson plans, and selected
+            classroom materials can live here.
+        </p>
+    </section>
+
 </main>
-    <nav aria-label="Portfolio"><a href="#latex-projects">LaTeX projects</a><a href="#resume">Résumé</a><a href="#teaching">Teaching portfolio</a></nav>
-<section id="latex-projects">
-    <h2>Selected Writing</h2>
 
-    <h3>Differential Equations Project</h3>
-    <p>
-        <a href="papers/Diff_Eeks_Project-2.pdf">
-            Read the paper (PDF)
-        </a>
-    </p>
+<noscript>
+    <p>The interactive image effects require JavaScript.</p>
+</noscript>
 
-    <h3>MLEM Uncertainty</h3>
-    <p>
-        <a href="papers/MLEM_Uncertainty_write_up_.pdf">
-            Read the paper (PDF)
-        </a>
-    </p>
-<section id="posters">
-    <h2>Posters</h2>
-    <p>Hover to pause. Click a poster to view it full size.</p>
+<!-- Fourier lettering -->
+<script>
+'use strict';
 
-    <div class="poster-viewport">
-        <div class="poster-track">
+const LETTERS = 'OSCAR';
+const SAMPLE_COUNT = 256;
+const MAX_TERMS = 120;
 
-            <div class="poster-group">
-                <a class="poster-card"
-                   href="posters/EdwardsErosion.png"
-                   target="_blank" rel="noopener">
-                    <img src="posters/EdwardsErosion.png"
-                         alt="Edwards Erosion research poster">
-                    <span>Edwards Erosion</span>
-                </a>
+const LETTER_PATHS = {
+    O: 'M 121 80 A 41 41 0 1 1 39 80 A 41 41 0 1 1 121 80',
+    S: 'M 112 45 C 94 26 47 29 45 55 C 43 78 111 77 114 101 C 118 129 65 141 43 116',
+    C: 'M 116 44 C 63 3 15 75 48 119 C 69 146 101 127 116 116',
+    A: 'M 38 126 L 73 36 Q 80 19 87 36 L 122 126 M 53 95 L 107 95',
+    R: 'M 45 128 L 45 35 L 85 35 C 135 35 137 88 86 88 L 45 88 M 82 88 L 119 128'
+};
 
-                <a class="poster-card"
-                   href="posters/MLEM_Poster.png"
-                   target="_blank" rel="noopener">
-                    <img src="posters/MLEM_Poster.png"
-                         alt="MLEM research poster">
-                    <span>MLEM</span>
-                </a>
+const TAU = Math.PI * 2;
+const canvas = document.querySelector('.intro canvas');
+const ctx = canvas.getContext('2d');
+const intro = document.querySelector('.intro');
+const slider = document.querySelector('#detail');
+const readout = document.querySelector('#readout');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
-                <a class="poster-card"
-                   href="posters/Sierpinski_Poster.png"
-                   target="_blank" rel="noopener">
-                    <img src="posters/Sierpinski_Poster.png"
-                         alt="Sierpiński research poster">
-                    <span>Sierpiński</span>
-                </a>
-            </div>
+let width = 0;
+let height = 0;
+let progress = reducedMotion.matches ? 1 : 0;
+let pending = false;
 
-            <!-- Repeated images make the conveyor loop seamlessly. -->
-            <div class="poster-group" aria-hidden="true">
-                <a class="poster-card"
-                   href="posters/EdwardsErosion.png"
-                   target="_blank" rel="noopener" tabindex="-1">
-                    <img src="posters/EdwardsErosion.png" alt="">
-                    <span>Edwards Erosion</span>
-                </a>
+function getContours(letter) {
+    const side = 160;
+    const source = document.createElement('canvas');
+    source.width = source.height = side;
 
-                <a class="poster-card"
-                   href="posters/MLEM_Poster.png"
-                   target="_blank" rel="noopener" tabindex="-1">
-                    <img src="posters/MLEM_Poster.png" alt="">
-                    <span>MLEM</span>
-                </a>
+    const pen = source.getContext('2d', { willReadFrequently: true });
+    pen.strokeStyle = '#fff';
+    pen.lineWidth = 24;
+    pen.lineJoin = pen.lineCap = 'round';
+    pen.stroke(new Path2D(LETTER_PATHS[letter]));
 
-                <a class="poster-card"
-                   href="posters/Sierpinski_Poster.png"
-                   target="_blank" rel="noopener" tabindex="-1">
-                    <img src="posters/Sierpinski_Poster.png" alt="">
-                    <span>Sierpiński</span>
-                </a>
-            </div>
+    const pixels = pen.getImageData(0, 0, side, side).data;
 
-        </div>
-    </div>
-</section>
-</section>
-    <section id="resume"><h2>Résumé</h2><p>This is where you can introduce and link to your résumé.</p></section>
-    <section id="teaching"><h2>Teaching portfolio</h2><p>Your teaching philosophy, lesson plans, and selected classroom materials can live here.</p></section>
-  </main>
-  <noscript><p>This lettering experiment requires JavaScript. The portfolio sections remain available below.</p></noscript>
-  <script>
-    'use strict';
-    // Design settings: change these without changing the Fourier mathematics.
-    const LETTERS = 'OSCAR';
-    const SAMPLE_COUNT = 256;
-    const MAX_TERMS = 120;
-    // Rounded monoline skeletons make bubble shapes without an external font.
-    // Edit these SVG path strings if you want to change the letter designs.
-    const LETTER_PATHS = {
-      O:'M 121 80 A 41 41 0 1 1 39 80 A 41 41 0 1 1 121 80',
-      S:'M 112 45 C 94 26 47 29 45 55 C 43 78 111 77 114 101 C 118 129 65 141 43 116',
-      C:'M 116 44 C 63 3 15 75 48 119 C 69 146 101 127 116 116',
-      A:'M 38 126 L 73 36 Q 80 19 87 36 L 122 126 M 53 95 L 107 95',
-      R:'M 45 128 L 45 35 L 85 35 C 135 35 137 88 86 88 L 45 88 M 82 88 L 119 128'
-    };
-    const TAU = Math.PI * 2;
-    const canvas = document.querySelector('canvas');
-    const ctx = canvas.getContext('2d');
-    const intro = document.querySelector('.intro');
-    const slider = document.querySelector('#detail');
-    const readout = document.querySelector('#readout');
-    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-    let width = 0, height = 0, progress = reducedMotion.matches ? 1 : 0, pending = false;
+    const inside = (x, y) =>
+        x >= 0 && y >= 0 && x < side && y < side &&
+        pixels[(y * side + x) * 4 + 3] >= 128;
 
-    // Rasterize a rounded heavy letter, then follow ALL its boundaries.
-    // Keeping separate loops preserves the holes in O, A and R.
-    function getContours(letter) {
-      const side = 160;
-      const source = document.createElement('canvas');
-      source.width = source.height = side;
-      const pen = source.getContext('2d', {willReadFrequently:true});
-      pen.strokeStyle = '#fff'; pen.lineWidth = 24;
-      pen.lineJoin = pen.lineCap = 'round';
-      pen.stroke(new Path2D(LETTER_PATHS[letter]));
-      const pixels = pen.getImageData(0, 0, side, side).data;
-      const inside = (x,y) => x>=0 && y>=0 && x<side && y<side && pixels[(y*side+x)*4+3] >= 128;
-      const edges = new Map();
-      function add(ax,ay,bx,by) {
-        const key = ay*(side+1)+ax;
+    const edges = new Map();
+
+    function add(ax, ay, bx, by) {
+        const key = ay * (side + 1) + ax;
         if (!edges.has(key)) edges.set(key, []);
-        edges.get(key).push(by*(side+1)+bx);
-      }
-      for(let y=0;y<side;y++) for(let x=0;x<side;x++) if(inside(x,y)) {
-        if(!inside(x,y-1)) add(x,y,x+1,y);
-        if(!inside(x+1,y)) add(x+1,y,x+1,y+1);
-        if(!inside(x,y+1)) add(x+1,y+1,x,y+1);
-        if(!inside(x-1,y)) add(x,y+1,x,y);
-      }
-      const loops=[];
-      while(edges.size) {
-        const start=edges.keys().next().value, loop=[];
-        let current=start;
-        for(let guard=0;guard<side*side*4;guard++) {
-          loop.push({x:current%(side+1)-80,y:Math.floor(current/(side+1))-80});
-          const exits=edges.get(current);
-          if(!exits || !exits.length) break;
-          const next=exits.pop();
-          if(!exits.length) edges.delete(current);
-          current=next;
-          if(current===start) break;
-        }
-        if(loop.length>25 && current===start) loops.push(loop);
-      }
-      return loops.sort((a,b)=>b.length-a.length);
+        edges.get(key).push(by * (side + 1) + bx);
     }
 
-    // Sample equal distances along each closed boundary, rather than
-    // letting dense corners receive disproportionate weight in the DFT.
-    function resample(loop) {
-      const cumulative=[0];
-      for(let i=0;i<loop.length;i++) {
-        const a=loop[i],b=loop[(i+1)%loop.length];
-        cumulative.push(cumulative[i]+Math.hypot(b.x-a.x,b.y-a.y));
-      }
-      const result=[],length=cumulative.at(-1);
-      let edge=0;
-      for(let i=0;i<SAMPLE_COUNT;i++) {
-        const distance=i*length/SAMPLE_COUNT;
-        while(cumulative[edge+1]<distance) edge++;
-        const a=loop[edge],b=loop[(edge+1)%loop.length];
-        const t=(distance-cumulative[edge])/(cumulative[edge+1]-cumulative[edge]);
-        result.push({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t});
-      }
-      return result;
+    for (let y = 0; y < side; y++) {
+        for (let x = 0; x < side; x++) {
+            if (!inside(x, y)) continue;
+            if (!inside(x, y - 1)) add(x, y, x + 1, y);
+            if (!inside(x + 1, y)) add(x + 1, y, x + 1, y + 1);
+            if (!inside(x, y + 1)) add(x + 1, y + 1, x, y + 1);
+            if (!inside(x - 1, y)) add(x, y + 1, x, y);
+        }
     }
 
-    // Complex DFT: c_k = (1/N) sum z_n exp(-i 2πkn/N).
-    // Frequencies are ordered 0,+1,-1,+2,-2,..., including the DC offset.
-    function transform(points) {
-      const frequencies=[0];
-      for(let k=1;k<SAMPLE_COUNT/2;k++) frequencies.push(k,-k);
-      frequencies.push(SAMPLE_COUNT/2);
-      return frequencies.map(k=>{
-        let re=0,im=0;
-        for(let n=0;n<points.length;n++) {
-          const angle=TAU*k*n/points.length,c=Math.cos(angle),s=Math.sin(angle);
-          re+=points[n].x*c+points[n].y*s;
-          im+=points[n].y*c-points[n].x*s;
+    const loops = [];
+
+    while (edges.size) {
+        const start = edges.keys().next().value;
+        const loop = [];
+        let current = start;
+
+        for (let guard = 0; guard < side * side * 4; guard++) {
+            loop.push({
+                x: current % (side + 1) - 80,
+                y: Math.floor(current / (side + 1)) - 80
+            });
+
+            const exits = edges.get(current);
+            if (!exits || !exits.length) break;
+
+            const next = exits.pop();
+            if (!exits.length) edges.delete(current);
+
+            current = next;
+            if (current === start) break;
         }
-        re/=points.length; im/=points.length;
-        return {k,re,im,radius:Math.hypot(re,im)};
-      });
+
+        if (loop.length > 25 && current === start) loops.push(loop);
     }
 
-    const glyphs=Array.from(LETTERS,letter=>getContours(letter).map(loop=>transform(resample(loop))));
+    return loops.sort((a, b) => b.length - a.length);
+}
 
-    // O and A are already quite readable with only a few harmonics.
-    // Briefly perturb their low-frequency coefficients, then smoothly restore
-    // the true letter coefficients over the first 55% of the scroll.
-    // The outlines AND the epicycle chains use these same coefficients.
-    function introCoefficients(coefficients,letter,contour,p) {
-      if((letter!=='O' && letter!=='A') || p>=.55) return coefficients;
-      const t=Math.max(0,Math.min(1,p/.55));
-      const strength=1-t*t*(3-2*t);
-      const amplitude=(letter==='O'?24:20)*(contour===0?1:.55)*strength;
-      const seed=(letter==='O'?.8:2.1)+contour*.8;
-      return coefficients.map(c=>{
-        let re=c.re,im=c.im;
-        if(Math.abs(c.k)===1) {
-          const angle=(c.k>0?1:-1)*.7*strength;
-          const factor=1-.3*strength;
-          re=(c.re*Math.cos(angle)-c.im*Math.sin(angle))*factor;
-          im=(c.re*Math.sin(angle)+c.im*Math.cos(angle))*factor;
-        }
-        if(Math.abs(c.k)===2) {
-          const angle=seed+(c.k<0?1.8:0);
-          const radius=amplitude*(c.k<0?.6:1);
-          re+=radius*Math.cos(angle);im+=radius*Math.sin(angle);
-        }
-        if(c.k===0 && contour>0) {
-          re+=12*strength;im-=8*strength;
-        }
-        return {k:c.k,re,im,radius:Math.hypot(re,im)};
-      });
+function resample(loop) {
+    const cumulative = [0];
+
+    for (let i = 0; i < loop.length; i++) {
+        const a = loop[i];
+        const b = loop[(i + 1) % loop.length];
+
+        cumulative.push(
+            cumulative[i] + Math.hypot(b.x - a.x, b.y - a.y)
+        );
     }
-    // Precompute unit complex waves; reconstruction then uses multiply/add.
-    const waves=Array.from({length:SAMPLE_COUNT},(_,i)=>{
-      const k=i===0?0:i===SAMPLE_COUNT-1?SAMPLE_COUNT/2:(i%2?(i+1)/2:-i/2);
-      return Array.from({length:SAMPLE_COUNT+1},(_,n)=>{
-        const a=TAU*k*n/SAMPLE_COUNT; return [Math.cos(a),Math.sin(a)];
-      });
+
+    const result = [];
+    const length = cumulative.at(-1);
+    let edge = 0;
+
+    for (let i = 0; i < SAMPLE_COUNT; i++) {
+        const distance = i * length / SAMPLE_COUNT;
+
+        while (cumulative[edge + 1] < distance) edge++;
+
+        const a = loop[edge];
+        const b = loop[(edge + 1) % loop.length];
+        const t = (distance - cumulative[edge]) /
+                  (cumulative[edge + 1] - cumulative[edge]);
+
+        result.push({
+            x: a.x + (b.x - a.x) * t,
+            y: a.y + (b.y - a.y) * t
+        });
+    }
+
+    return result;
+}
+
+function transform(points) {
+    const frequencies = [0];
+
+    for (let k = 1; k < SAMPLE_COUNT / 2; k++) {
+        frequencies.push(k, -k);
+    }
+
+    frequencies.push(SAMPLE_COUNT / 2);
+
+    return frequencies.map(k => {
+        let re = 0;
+        let im = 0;
+
+        for (let n = 0; n < points.length; n++) {
+            const angle = TAU * k * n / points.length;
+            const c = Math.cos(angle);
+            const s = Math.sin(angle);
+
+            re += points[n].x * c + points[n].y * s;
+            im += points[n].y * c - points[n].x * s;
+        }
+
+        re /= points.length;
+        im /= points.length;
+
+        return { k, re, im, radius: Math.hypot(re, im) };
     });
+}
 
-    function drawLoop(coefficients,count,phase,scale,circles,fade) {
-      const xs=new Float64Array(SAMPLE_COUNT+1),ys=new Float64Array(SAMPLE_COUNT+1);
-      for(let i=0;i<count;i++) {
-        const c=coefficients[i],wave=waves[i];
-        for(let n=0;n<=SAMPLE_COUNT;n++) {
-          xs[n]+=c.re*wave[n][0]-c.im*wave[n][1];
-          ys[n]+=c.re*wave[n][1]+c.im*wave[n][0];
-        }
-      }
-      ctx.beginPath();
-      for(let n=0;n<=SAMPLE_COUNT;n++) {
-        if(n===0) ctx.moveTo(xs[n]*scale,ys[n]*scale);
-        else ctx.lineTo(xs[n]*scale,ys[n]*scale);
-      }
-      ctx.strokeStyle=`rgba(242,238,223,${1-.35*fade})`;ctx.lineWidth=2;ctx.stroke();
-      if(!circles || fade<=0) return;
-      // A brighter tail shows the pen travelling along the reconstructed path.
-      const tip=Math.floor((phase%1)*SAMPLE_COUNT);
-      ctx.beginPath();
-      for(let step=0;step<=48;step++) {
-        const n=(tip-48+step+SAMPLE_COUNT)%SAMPLE_COUNT;
-        if(step===0) ctx.moveTo(xs[n]*scale,ys[n]*scale);
-        else ctx.lineTo(xs[n]*scale,ys[n]*scale);
-      }
-      ctx.strokeStyle='#fff8e6';ctx.lineWidth=2.6;ctx.stroke();
-      let x=coefficients[0].re*scale,y=coefficients[0].im*scale;
-      // The outer boundary gets the visible epicycle construction.
-      for(let i=1;i<count;i++) {
-        const c=coefficients[i],a=TAU*c.k*phase;
-        const nx=x+(c.re*Math.cos(a)-c.im*Math.sin(a))*scale;
-        const ny=y+(c.re*Math.sin(a)+c.im*Math.cos(a))*scale;
-        if(c.radius*scale>0.7) {
-          ctx.beginPath();ctx.arc(x,y,c.radius*scale,0,TAU);
-          ctx.strokeStyle=`rgba(229,164,119,${.23*fade})`;ctx.lineWidth=.7;ctx.stroke();
-          ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(nx,ny);
-          ctx.strokeStyle=`rgba(229,164,119,${.5*fade})`;ctx.stroke();
-        }
-        x=nx;y=ny;
-      }
-      ctx.beginPath();ctx.arc(x,y,2.8,0,TAU);ctx.fillStyle=`rgba(255,190,136,${fade})`;ctx.fill();
+const glyphs = Array.from(LETTERS, letter =>
+    getContours(letter).map(loop => transform(resample(loop)))
+);
+
+function introCoefficients(coefficients, letter, contour, p) {
+    if ((letter !== 'O' && letter !== 'A') || p >= .55) {
+        return coefficients;
     }
 
-    function draw() {
-      pending=false;
-      ctx.clearRect(0,0,width,height);
-      const p=Math.max(0,Math.min(1,progress));
-      // Hold at a low order briefly, then reveal finer boundary features.
-      const eased=p*p;
-      const count=Math.min(MAX_TERMS,5+Math.floor(eased*(MAX_TERMS-5)));
-      const spacing=Math.min(width*.178,190),scale=spacing/132;
-      const centerY=height*.43;
-      const phase=p*3.5;
-      const fade=Math.min(1,(1-p)*8);
-      for(let i=0;i<glyphs.length;i++) {
-        ctx.save();ctx.translate(width/2+(i-2)*spacing,centerY);
-        for(let j=0;j<glyphs[i].length;j++) {
-          const coefficients=introCoefficients(glyphs[i][j],LETTERS[i],j,p);
-          drawLoop(coefficients,count,phase,scale,j===0,fade);
+    const t = Math.max(0, Math.min(1, p / .55));
+    const strength = 1 - t * t * (3 - 2 * t);
+    const amplitude = (letter === 'O' ? 24 : 20) *
+                      (contour === 0 ? 1 : .55) * strength;
+    const seed = (letter === 'O' ? .8 : 2.1) + contour * .8;
+
+    return coefficients.map(c => {
+        let re = c.re;
+        let im = c.im;
+
+        if (Math.abs(c.k) === 1) {
+            const angle = (c.k > 0 ? 1 : -1) * .7 * strength;
+            const factor = 1 - .3 * strength;
+
+            re = (c.re * Math.cos(angle) -
+                  c.im * Math.sin(angle)) * factor;
+
+            im = (c.re * Math.sin(angle) +
+                  c.im * Math.cos(angle)) * factor;
         }
+
+        if (Math.abs(c.k) === 2) {
+            const angle = seed + (c.k < 0 ? 1.8 : 0);
+            const radius = amplitude * (c.k < 0 ? .6 : 1);
+
+            re += radius * Math.cos(angle);
+            im += radius * Math.sin(angle);
+        }
+
+        if (c.k === 0 && contour > 0) {
+            re += 12 * strength;
+            im -= 8 * strength;
+        }
+
+        return { k: c.k, re, im, radius: Math.hypot(re, im) };
+    });
+}
+
+const waves = Array.from({ length: SAMPLE_COUNT }, (_, i) => {
+    const k = i === 0 ? 0 :
+              i === SAMPLE_COUNT - 1 ? SAMPLE_COUNT / 2 :
+              i % 2 ? (i + 1) / 2 : -i / 2;
+
+    return Array.from({ length: SAMPLE_COUNT + 1 }, (_, n) => {
+        const a = TAU * k * n / SAMPLE_COUNT;
+        return [Math.cos(a), Math.sin(a)];
+    });
+});
+
+function drawLoop(coefficients, count, phase, scale, circles, fade) {
+    const xs = new Float64Array(SAMPLE_COUNT + 1);
+    const ys = new Float64Array(SAMPLE_COUNT + 1);
+
+    for (let i = 0; i < count; i++) {
+        const c = coefficients[i];
+        const wave = waves[i];
+
+        for (let n = 0; n <= SAMPLE_COUNT; n++) {
+            xs[n] += c.re * wave[n][0] - c.im * wave[n][1];
+            ys[n] += c.re * wave[n][1] + c.im * wave[n][0];
+        }
+    }
+
+    ctx.beginPath();
+
+    for (let n = 0; n <= SAMPLE_COUNT; n++) {
+        if (n === 0) ctx.moveTo(xs[n] * scale, ys[n] * scale);
+        else ctx.lineTo(xs[n] * scale, ys[n] * scale);
+    }
+
+    ctx.strokeStyle = `rgba(242,238,223,${1 - .35 * fade})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    if (!circles || fade <= 0) return;
+
+    const tip = Math.floor((phase % 1) * SAMPLE_COUNT);
+    ctx.beginPath();
+
+    for (let step = 0; step <= 48; step++) {
+        const n = (tip - 48 + step + SAMPLE_COUNT) % SAMPLE_COUNT;
+
+        if (step === 0) ctx.moveTo(xs[n] * scale, ys[n] * scale);
+        else ctx.lineTo(xs[n] * scale, ys[n] * scale);
+    }
+
+    ctx.strokeStyle = '#fff8e6';
+    ctx.lineWidth = 2.6;
+    ctx.stroke();
+
+    let x = coefficients[0].re * scale;
+    let y = coefficients[0].im * scale;
+
+    for (let i = 1; i < count; i++) {
+        const c = coefficients[i];
+        const a = TAU * c.k * phase;
+
+        const nx = x + (
+            c.re * Math.cos(a) - c.im * Math.sin(a)
+        ) * scale;
+
+        const ny = y + (
+            c.re * Math.sin(a) + c.im * Math.cos(a)
+        ) * scale;
+
+        if (c.radius * scale > .7) {
+            ctx.beginPath();
+            ctx.arc(x, y, c.radius * scale, 0, TAU);
+            ctx.strokeStyle = `rgba(229,164,119,${.23 * fade})`;
+            ctx.lineWidth = .7;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(nx, ny);
+            ctx.strokeStyle = `rgba(229,164,119,${.5 * fade})`;
+            ctx.stroke();
+        }
+
+        x = nx;
+        y = ny;
+    }
+
+    ctx.beginPath();
+    ctx.arc(x, y, 2.8, 0, TAU);
+    ctx.fillStyle = `rgba(255,190,136,${fade})`;
+    ctx.fill();
+}
+
+function draw() {
+    pending = false;
+    ctx.clearRect(0, 0, width, height);
+
+    const p = Math.max(0, Math.min(1, progress));
+    const count = Math.min(
+        MAX_TERMS,
+        5 + Math.floor(p * p * (MAX_TERMS - 5))
+    );
+
+    const spacing = Math.min(width * .178, 190);
+    const scale = spacing / 132;
+    const phase = p * 3.5;
+    const fade = Math.min(1, (1 - p) * 8);
+
+    for (let i = 0; i < glyphs.length; i++) {
+        ctx.save();
+        ctx.translate(width / 2 + (i - 2) * spacing, height * .43);
+
+        for (let j = 0; j < glyphs[i].length; j++) {
+            const coefficients = introCoefficients(
+                glyphs[i][j], LETTERS[i], j, p
+            );
+
+            drawLoop(
+                coefficients, count, phase, scale, j === 0, fade
+            );
+        }
+
         ctx.restore();
-      }
-      slider.value=Math.round(p*1000);
-      readout.value=`${count} / ${MAX_TERMS} terms`;
     }
-    function schedule() { if(!pending) {pending=true; requestAnimationFrame(draw);} }
-    function resize() {
-      width=canvas.clientWidth;height=canvas.clientHeight;
-      const dpr=Math.min(devicePixelRatio||1,2);
-      canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
-      ctx.setTransform(dpr,0,0,dpr,0,0);schedule();
+
+    slider.value = Math.round(p * 1000);
+    readout.value = `${count} / ${MAX_TERMS} terms`;
+}
+
+function schedule() {
+    if (!pending) {
+        pending = true;
+        requestAnimationFrame(draw);
     }
-    function onScroll() {
-      if(reducedMotion.matches) return;
-      const rect=intro.getBoundingClientRect();
-      progress=Math.max(0,Math.min(1,-rect.top/Math.max(1,intro.offsetHeight-innerHeight)));
-      schedule();
-    }
-    slider.addEventListener('input',()=>{progress=Number(slider.value)/1000;schedule();});
-    addEventListener('scroll',onScroll,{passive:true});
-    addEventListener('resize',()=>{resize();onScroll();});
-    reducedMotion.addEventListener('change',()=>{
-      progress=reducedMotion.matches?1:0;
-      document.querySelector('#hint').textContent=reducedMotion.matches?'Full lettering shown. Use the slider to explore Fourier detail.':'Scroll to reconstruct the letters. Each circle contributes another Fourier component.';
-      resize();onScroll();
-    });
-    if(reducedMotion.matches) document.querySelector('#hint').textContent='Full lettering shown. Use the slider to explore Fourier detail.';
-    resize();onScroll();
-    // Expose only numerical diagnostics for verifying this experiment.
-    window.fourierDemo={glyphs,draw, get progress(){return progress;}};
-  </script>
-  <script>
+}
+
+function resize() {
+    width = canvas.clientWidth;
+    height = canvas.clientHeight;
+
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    schedule();
+}
+
+function onScroll() {
+    if (reducedMotion.matches) return;
+
+    const rect = intro.getBoundingClientRect();
+
+    progress = Math.max(
+        0,
+        Math.min(
+            1,
+            -rect.top / Math.max(1, intro.offsetHeight - innerHeight)
+        )
+    );
+
+    schedule();
+}
+
+slider.addEventListener('input', () => {
+    progress = Number(slider.value) / 1000;
+    schedule();
+});
+
+addEventListener('scroll', onScroll, { passive: true });
+
+addEventListener('resize', () => {
+    resize();
+    onScroll();
+});
+
+reducedMotion.addEventListener('change', () => {
+    progress = reducedMotion.matches ? 1 : 0;
+
+    document.querySelector('#hint').textContent =
+        reducedMotion.matches
+        ? 'Full lettering shown. Use the slider to explore Fourier detail.'
+        : 'Scroll to reconstruct the letters. Each circle contributes another Fourier component.';
+
+    resize();
+    onScroll();
+});
+
+if (reducedMotion.matches) {
+    document.querySelector('#hint').textContent =
+        'Full lettering shown. Use the slider to explore Fourier detail.';
+}
+
+resize();
+onScroll();
+</script>
+
+<!-- Portrait pixel dithering and introduction -->
+<script>
 (() => {
     const photo = document.getElementById('portrait-source');
     const canvas = document.getElementById('portrait-canvas');
     const slider = document.getElementById('portrait-detail');
-    const text = document.getElementById('about-copy');
+    const text = document.getElementById('about-text');
 
     if (!photo || !canvas || !slider || !text) return;
 
@@ -605,7 +937,6 @@ label[for="portrait-detail"] {
     const cache = new Map();
     let waiting = false;
 
-    // Your grayscale conversion, four levels, and Atkinson diffusion.
     function atkinson(pixels, width, height) {
         const gray = new Float32Array(width * height);
         const result = new Uint8Array(width * height);
@@ -616,7 +947,6 @@ label[for="portrait-detail"] {
                     + 0.1140 * pixels[i * 4 + 2];
         }
 
-        // Check boundaries so error never wraps onto another edge.
         function spread(x, y, error) {
             if (x >= 0 && x < width && y >= 0 && y < height) {
                 gray[y * width + x] += error;
@@ -652,7 +982,6 @@ label[for="portrait-detail"] {
         waiting = false;
         const p = Number(slider.value) / 100;
 
-        // The same slider sharpens your introduction.
         text.style.filter = `blur(${12 * (1 - p) ** 2}px)`;
 
         if (!photo.complete || !photo.naturalWidth) return;
@@ -675,10 +1004,9 @@ label[for="portrait-detail"] {
         if (p === 1) {
             ctx.drawImage(photo, 0, 0, width, height);
         } else {
-            // Large pixels initially; finer pixels as detail increases.
             const block = Math.max(
                 1,
-                Math.round(18 ** (1 - Math.min(p / 0.8, 1)))
+                Math.round(18 ** (1 - Math.min(p / .8, 1)))
             );
 
             const w = Math.max(2, Math.round(width / block));
@@ -709,13 +1037,11 @@ label[for="portrait-detail"] {
             small.height = frame.height;
             sample.putImageData(frame, 0, 0);
 
-            // Preserve the square pixels when enlarging.
             ctx.imageSmoothingEnabled = false;
             ctx.drawImage(small, 0, 0, width, height);
 
-            // Toward the end, reveal the clear original photograph.
             const t = Math.max(
-                0, Math.min(1, (p - 0.6) / 0.4)
+                0, Math.min(1, (p - .6) / .4)
             );
 
             ctx.globalAlpha = t * t * (3 - 2 * t);
@@ -748,5 +1074,6 @@ label[for="portrait-detail"] {
     queueRender();
 })();
 </script>
+
 </body>
 </html>
