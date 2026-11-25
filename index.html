@@ -189,16 +189,32 @@
     </div>
   </section>
   <main id="portfolio">
-  
+  <section id="about">
+    <div class="about-layout">
+        <div>
+            <div class="portrait-frame">
+                <img id="portrait-source"
+                     src="images/IMG_0669.jpeg"
+                     alt="Oscar Thompson">
 
-    <!-- NEW PHOTO + WHO AM I + SLIDER GO HERE -->
+                <canvas id="portrait-canvas"
+                        aria-hidden="true"></canvas>
+            </div>
 
-    <nav aria-label="Portfolio">
-        <!-- Your existing navigation links -->
-    </nav>
+            <label for="portrait-detail">Bring into focus</label>
+            <input id="portrait-detail"
+                   type="range"
+                   min="0"
+                   max="100"
+                   value="0">
+        </div>
 
-    <!-- Your existing papers, posters, résumé, and teaching sections -->
-
+        <div id="about-copy">
+            <h2>Who am I?</h2>
+            <p>Write your introduction here.</p>
+        </div>
+    </div>
+</section>
 </main>
     <nav aria-label="Portfolio"><a href="#latex-projects">LaTeX projects</a><a href="#resume">Résumé</a><a href="#teaching">Teaching portfolio</a></nav>
 <section id="latex-projects">
